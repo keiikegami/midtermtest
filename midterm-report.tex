@@ -44,6 +44,25 @@ The main idea of this paper is the below identity.
 	&= \int_0^1 {\rm E}_{\theta | {\bf y}, t} \left[ {\rm log}\left\{ p({\bf y} | \theta) \right\} \right] \mathrm{d}t
 \end{align*}
 
+This identity implies that we can approximate the the marginal loglikelihood specific to a model by a numerical integration of the expectation of a loglikelihood fixed at some t. This expectation is gotten by MCMC method, i.e. Gibbs sampling in this example. Given each prior, the full conditional distribution of each parameter is as follows. 
+
+\begin{align*}
+	p(\alpha | {\bf y}, {\bf x}, t, \beta, \sigma^2) &\propto p({\bf y} | \alpha, \beta, \sigma^2)^t p(\alpha) \\
+		&\propto \exp \left( - \frac{1}{2\sigma^2} \left( t \sum_i (y_i - \beta(x_i - \bar{x}))^2 - 2t \alpha \sum_i (y_i - \beta(x_i - \bar{x}))  + \alpha^2 Nt \right) + \frac{1}{2\sigma_{\alpha}^2} (\alpha^2 - 2\mu_{alpha} \alpha + \mu_{\alpha}^2)\right)\\
+		&\propto \exp \left( -\frac{\sigma_{\alpha}^2 Nt + \sigma^2}{\sigma^2 \sigma_{\alpha}^2} \left( \alpha - \frac{\sigma_{\alpha}^2 t \sum_i (y_i - \beta(x_i -\bar{x})) + \sigma^2 \mu_{\alpha}}{\sigma_{\alpha}^2 Nt + \sigma^2} \right)^2 \right)\\
+	p(\beta | {\bf y}, {\bf x}, t, \alpha, \sigma^2) &\propto p({\bf y} | \alpha, \beta, \sigma^2)^t p(\beta)\\
+		&\propto \exp \left( - \left( \frac{1}{2\sigma^2} t\sum_i (y_i - \alpha - \beta(x_i -\bar{x}))^2 + \frac{1}{2\sigma_{\beta}^2} (\beta - \mu_{\beta})^2 \right)\right)\\
+		&\propto \exp \left( - \left( \frac{\sigma_{\beta}^2 t \sum_i (x_i - \bar{x})^2 + \sigma^2}{2\sigma^2 \sigma_{\beta}^2} \beta^2 - \frac{\sigma_{\beta}^2 t \sum_i (x_i- \bar{x})(y_i - \alpha) + \sigma^2 \mu_{\beta}}{\sigma^2 \sigma_{\beta}^2} \beta \right) \right)\\
+		&\propto \exp \left( - \frac{\sigma_{\beta}^2 t \sum_i (x_i - \bar{x})^2 + \sigma^2}{2\sigma^2 \sigma_{\beta}^2} \left( \beta - \frac{\sigma_{\beta}^2 t \sum_i (x_i- \bar{x})(y_i - \alpha) + \sigma^2 \mu_{\beta}}{\sigma_{\beta}^2 t \sum_i (x_i - \bar{x})^2 + \sigma^2}\right)^2 \right)\\
+	p(\sigma^2 | {\bf y}, {\bf x}, t, \alpha, \beta) &\propto p({\bf y} | \alpha, \beta, \sigma^2)^t p(\sigma^2) \\
+		&= \left\{ \Pi_{i=1}^{N} \left( \frac{1}{\sqrt{2\pi \sigma^2}} \exp \left( - \frac{(y_i - \alpha - \beta(x_i - \bar{x}))^2}{2\sigma^2}\right)^t \right) \right\} \exp \left( -\frac{1}{b \sigma^2} \right) \frac{1}{\gamma(a)} b^{-a} (\sigma^2)^{-(a + 1)}\\
+		&\propto (\sigma^2)^{-\frac{Nt}{2} + a + 1} \exp \left( - \frac{bt \sum_i (y_i - \alpha - \beta(x_i -\bar{x}))^2 + 2}{2b\sigma^2} \right)\\
+\end{align*}
+By the above, $\alpha$'s full conditional distribution is $N \left(\frac{\sigma_{\alpha}^2 t \sum_i (y_i - \beta(x_i -\bar{x})) + \sigma^2 \mu_{\alpha}}{\sigma_{\alpha}^2 Nt + \sigma^2}, \frac{\sigma^2 \sigma_{\alpha}^2}{\sigma_{\alpha}^2 Nt + \sigma^2} \right)$. $\beta$'s full conditional distribution is $N\left( \frac{\sigma_{\beta}^2 t \sum_i (x_i- \bar{x})(y_i - \alpha) + \sigma^2 \mu_{\beta}}{\sigma_{\beta}^2 t \sum_i (x_i - \bar{x})^2 + \sigma^2}, \frac{\sigma^2 \sigma_{\beta}^2}{\sigma_{\beta}^2 t \sum_i (x_i - \bar{x})^2 + \sigma^2} \right)$. $\sigma^2$ is $IG\left( \frac{Nt}{2} + a, \frac{2b}{bt \sum_i (y_i - \alpha - \beta(x_i -\bar{x}))^2 + 2} \right)$. 
+\par
+The above code took about 4 hours. This is due to the long iteration of Gibbs sampling, and I check the MCMC converge very fast in this case. Then I wonder why the authors take such a long chain. If I use some efficient MCMC packages or write the more matrix based code, they must shorten the time. It is, however, better to write a readable code because this is just an assignment.
+\par
+Anyway, the computation of marginal likelihood is so hard that a lot of tools and methods have been invented. In this example, the number of regression parameters are just three including the precision for each model. Then the model selection problem in high dimension must be a terrible and challenging task.
 
 
 \end{document}
