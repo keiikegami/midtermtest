@@ -1,0 +1,74 @@
+\documentclass{article}
+\usepackage[margin = .7in]{geometry}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{bm}
+\lstset{%
+  language={python},
+  basicstyle={\small},%
+  identifierstyle={\small},%
+  commentstyle={\small\itshape},%
+  keywordstyle={\small\bfseries},%
+  ndkeywordstyle={\small},%
+  stringstyle={\small\ttfamily},
+  frame={tb},
+  breaklines=true,
+  columns=[l]{fullflexible},%
+  numbers=left,%
+  xrightmargin=0zw,%
+  xleftmargin=3zw,%
+  numberstyle={\scriptsize},%
+  stepnumber=1,
+  numbersep=1zw,%
+  lineskip=-0.5ex%
+}
+
+\begin{document}
+\title{STAT6011/7611/6111/3317 \\ 
+COMPUTATIONAL STATISTICS (2016 Fall)\\
+Midterm Examination}
+\author{Kei Ikegami (u3535947)}
+\maketitle
+
+\section{}
+The code is below.
+\lstinputlisting[caption=code]{code.py}
+The result is .
+\par
+The main idea of this paper is the below identity.
+\begin{align*}
+	{\rm log} \left\{ p({\bf y}) \right\} &= {\rm log} \left\{ \frac{z({\bf y}| t=1)}{z({\bf y} | t=0)} \right\} = \left[ {\rm log}\left\{z({\bf y} | t)\right\} \right]_0^1 = \int_0^1 \frac{1}{z({\bf y} | t)} \frac{\mathrm{d}}{\mathrm{d} t} z({\bf y} | t) \mathrm{d}t\\
+	&= \int_0^1 \frac{1}{z({\bf y} | t)} \left( \int_{\theta} \frac{\mathrm{d}}{\mathrm{d}t} p({\bf y}\theta)^t p(\theta) \mathrm{\theta} \right) \mathrm{d}t = \int_0^1 \frac{1}{z({\bf y} | t)} \left( \int_{\theta} {\rm log} \left\{ p({\bf y} | \theta) \right\} p({\bf y} | \theta)^t p(\theta) \mathrm{d}\theta \right) \mathrm{d} t\\
+	&= \int_0^1 \int_{\theta} {\rm log} \left\{ p({\bf y} | \theta) \right\} \frac{p({\bf y} | \theta)^t p(\theta)}{z({\bf y} | t)} \mathrm{d} \theta \mathrm{d} t = \int_0^1 \int_{\theta} {\rm log} \left\{ p({\bf y} | \theta) \right\} p_t(\theta | {\bf y}) \mathrm{d} \theta \mathrm{d} t\\
+	&= \int_0^1 {\rm E}_{\theta | {\bf y}, t} \left[ {\rm log}\left\{ p({\bf y} | \theta) \right\} \right] \mathrm{d}t
+\end{align*}
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
