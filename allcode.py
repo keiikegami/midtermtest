@@ -1,4 +1,5 @@
 # import packages
+% matplotlib inline
 from scipy.stats import invgamma
 from scipy.stats import norm
 from multiprocessing import Pool
@@ -6,7 +7,6 @@ from datetime import datetime
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-% matplotlib inline
 
 
 # define functions
