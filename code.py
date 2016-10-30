@@ -32,7 +32,7 @@ def loglike(alpha, beta, sigma):
 def function1(w):
     
     if w < m:
-        np.random.seed(datetime.now().microsecond)
+        np.random.seed(datetime.now().microsecond * np.random.randint(20))
 
         for i in range(n+1):
             t = ts[i]
@@ -88,7 +88,7 @@ def loglike2(alpha, beta, sigma):
     
 def function2(w):
     if w < m:
-        np.random.seed(datetime.now().microsecond)
+        np.random.seed(datetime.now().microsecond * np.random.randint(20))
 
         for i in range(n+1):
             t = ts[i]
